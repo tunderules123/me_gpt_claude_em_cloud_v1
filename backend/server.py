@@ -328,7 +328,7 @@ async def send_message(request: SendRequest):
         replies=replies
     )
 
-@app.post("/reset", response_model=ResetResponse)
+@app.post("/api/reset", response_model=ResetResponse)
 async def reset_chat():
     """Reset chat history"""
     global message_history
@@ -336,9 +336,9 @@ async def reset_chat():
     return ResetResponse(ok=True)
 
 # Health check endpoint
-@app.get("/")
+@app.get("/api/")
 async def root():
-    return {"message": "Chat API is running", "endpoints": ["/history", "/send", "/reset"]}
+    return {"message": "Chat API is running", "endpoints": ["/api/history", "/api/send", "/api/reset"]}
 
 if __name__ == "__main__":
     import uvicorn

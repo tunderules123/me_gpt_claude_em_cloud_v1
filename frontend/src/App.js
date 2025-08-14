@@ -207,6 +207,10 @@ function App() {
                     isErrorMessage(message.content)
                       ? "border-2 border-destructive bg-destructive/10 text-destructive"
                       : ""
+                  } ${
+                    message.isLoading
+                      ? "animate-pulse bg-opacity-70"
+                      : ""
                   }`}
                 >
                   <div className="flex items-center gap-2 mb-2">

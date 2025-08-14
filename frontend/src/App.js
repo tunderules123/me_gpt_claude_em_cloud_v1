@@ -48,28 +48,62 @@ function App() {
       return;
     }
 
+    const messageContent = content.trim();
+    const tagsToSend = [...selectedTags];
+    
+    // Generate temporary ID for user message
+    const tempUserMessageId = `temp_${Date.now()}`;
+    
+    // Add user message immediately (optimistic update)
+    const userMessage = {
+      id: tempUserMessageId,
+      author: "user",
+      role: "user",
+      content: messageContent,
+      ts: Date.now(),
+    };
+
+    // Add user message and placeholder loading messages for each selected AI
+    const loadingMessages = tagsToSend.map((tag, index) => ({
+      id: `loading_${Date.now()}_${index}`,
+      author: tag.slice(1), // Remove @ prefix
+      role: "assistant",
+      content: "Thinking...",
+      ts: Date.now() + index + 1,
+      isLoading: true,
+    }));
+
+    setHistory((prev) => [...prev, userMessage, ...loadingMessages]);
+    
+    // Clear content and set loading state
+    setContent("");
     setIsLoading(true);
     setError(null);
 
     try {
-      const response = await sendMessage(content.trim(), selectedTags);
+      const response = await sendMessage(messageContent, tagsToSend);
       
-      // Add user message
-      const userMessage = {
-        id: response.userMessageId,
-        author: "user",
-        role: "user",
-        content: content.trim(),
-        ts: Date.now(),
-      };
-
-      // Add all messages to history
-      setHistory((prev) => [...prev, userMessage, ...response.replies]);
+      // Remove loading messages and add real responses
+      setHistory((prev) => {
+        // Remove the loading messages
+        const withoutLoading = prev.filter(msg => !msg.isLoading);
+        
+        // Update user message with real ID from server
+        const updatedHistory = withoutLoading.map(msg => 
+          msg.id === tempUserMessageId 
+            ? { ...msg, id: response.userMessageId }
+            : msg
+        );
+        
+        // Add real responses
+        return [...updatedHistory, ...response.replies];
+      });
       
-      // Clear content but keep selected tags
-      setContent("");
     } catch (err) {
       setError(`Failed to send message: ${err.message}`);
+      
+      // Remove loading messages on error
+      setHistory((prev) => prev.filter(msg => !msg.isLoading));
     } finally {
       setIsLoading(false);
     }

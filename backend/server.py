@@ -120,7 +120,7 @@ async def call_anthropic_faithful(messages: List[Dict[str, str]], timeout: int =
                 })
         
         kwargs = {
-            "model": "claude-3-sonnet-20240229",
+            "model": "claude-3-5-sonnet-20241022",
             "messages": anthropic_messages,
             "max_tokens": 1000,
             "timeout": timeout

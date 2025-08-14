@@ -1,7 +1,7 @@
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 export async function getHistory() {
-  const response = await fetch(`${BACKEND_URL}/history`, {
+  const response = await fetch(`${BACKEND_URL}/api/history`, {
     method: "GET",
   });
   
@@ -17,7 +17,7 @@ export async function sendMessage(content, tags, timeoutMs = 25000) {
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
   
   try {
-    const response = await fetch(`${BACKEND_URL}/send`, {
+    const response = await fetch(`${BACKEND_URL}/api/send`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -38,7 +38,7 @@ export async function sendMessage(content, tags, timeoutMs = 25000) {
 }
 
 export async function resetChat() {
-  const response = await fetch(`${BACKEND_URL}/reset`, {
+  const response = await fetch(`${BACKEND_URL}/api/reset`, {
     method: "POST",
   });
   

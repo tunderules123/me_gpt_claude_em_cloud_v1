@@ -159,7 +159,7 @@ async def call_anthropic_compat(messages: List[Dict[str, str]], timeout: int = 2
             })
         
         response = anthropic_client.messages.create(
-            model="claude-3-sonnet-20240229",
+            model="claude-3-5-sonnet-20241022",
             messages=compat_messages,
             max_tokens=1000,
             timeout=timeout

@@ -167,7 +167,10 @@ async def call_anthropic_compat(messages: List[Dict[str, str]], timeout: int = 2
             max_tokens=1000,
             timeout=timeout
         )
-        return response.content[0].text
+        if response.content and len(response.content) > 0:
+            return response.content[0].text
+        else:
+            raise Exception("Empty response from Anthropic")
     except Exception as e:
         logger.error(f"Anthropic compat API error: {e}")
         raise

@@ -73,6 +73,14 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+def clean_speaker_labels(content: str) -> str:
+    """Remove all speaker labels from content comprehensively"""
+    import re
+    # Remove speaker labels like [SPEAKER: USER], [SPEAKER: GPT], [SPEAKER: CLAUDE], etc.
+    # This handles multiple occurrences and various formats
+    cleaned = re.sub(r'\[SPEAKER:\s*[^\]]+\]\s*', '', content)
+    return cleaned.strip()
+
 def create_speaker_labeled_content(history: List[Msg]) -> List[Dict[str, str]]:
     """Convert message history to provider format with speaker labels"""
     messages = []

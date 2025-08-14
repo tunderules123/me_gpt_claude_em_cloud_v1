@@ -192,7 +192,7 @@ async def call_anthropic(messages: List[Dict[str, str]], timeout: int = 20) -> s
     except Exception as e:
         # Check if it's a role alternation error
         error_str = str(e).lower()
-        if "alternate" in error_str or "role" in error_str:
+        if "alternate" in error_str or "role" in error_str or "empty response" in error_str:
             logger.info("Anthropic faithful failed with alternation error, retrying with compat mapping")
             try:
                 return await call_anthropic_compat(messages, timeout)

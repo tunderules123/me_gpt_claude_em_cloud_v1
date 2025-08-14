@@ -141,7 +141,8 @@ async def call_anthropic_faithful(messages: List[Dict[str, str]], timeout: int =
         if response.content and len(response.content) > 0:
             return response.content[0].text
         else:
-            raise Exception("Empty response from Anthropic")
+            # Empty response often indicates role alternation issues
+            raise Exception("role alternation error - empty response")
     except Exception as e:
         logger.error(f"Anthropic faithful API error: {e}")
         raise

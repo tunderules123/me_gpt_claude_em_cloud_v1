@@ -219,12 +219,12 @@ async def call_provider(provider: str, messages: List[Dict[str, str]]) -> str:
             logger.info(f"Provider {provider} attempt {attempt + 1} failed, retrying in {wait_time}s: {e}")
             await asyncio.sleep(wait_time)
 
-@app.get("/history", response_model=HistoryResponse)
+@app.get("/api/history", response_model=HistoryResponse)
 async def get_history():
     """Get chat history"""
     return HistoryResponse(history=message_history)
 
-@app.post("/send", response_model=SendResponse)
+@app.post("/api/send", response_model=SendResponse)
 async def send_message(request: SendRequest):
     """Send message and get replies from selected providers"""
     if not request.content.strip():

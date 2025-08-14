@@ -258,6 +258,13 @@ async def send_message(request: SendRequest):
             # Call provider
             response_content = await call_provider(provider, provider_messages)
             
+            # Remove any speaker labels from the response (shouldn't happen but safety check)
+            if response_content.startswith("[SPEAKER:"):
+                # Find the end of the speaker label and remove it
+                end_idx = response_content.find("]")
+                if end_idx != -1:
+                    response_content = response_content[end_idx + 1:].strip()
+            
             # Create reply message
             reply = Reply(
                 id=str(uuid.uuid4()),

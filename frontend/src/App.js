@@ -222,7 +222,14 @@ function App() {
                     </span>
                   </div>
                   <div className="whitespace-pre-wrap break-words">
-                    {message.content}
+                    {message.isLoading ? (
+                      <div className="flex items-center gap-2">
+                        <div className="animate-spin w-4 h-4 border-2 border-current border-t-transparent rounded-full"></div>
+                        {message.content}
+                      </div>
+                    ) : (
+                      message.content
+                    )}
                   </div>
                 </div>
               </div>

@@ -224,8 +224,8 @@ async def call_provider(provider: str, messages: List[Dict[str, str]]) -> str:
                 error_msg = f"timeout after {timeout * 1000}ms" if "timeout" in str(e).lower() else str(e)
                 raise Exception(f"(error from {provider.title()}: {error_msg})")
             
-            # Wait before retry with exponential backoff
-            wait_time = 2 ** attempt
+            # Wait before retry with shorter backoff
+            wait_time = 1 + attempt  # Linear backoff instead of exponential
             logger.info(f"Provider {provider} attempt {attempt + 1} failed, retrying in {wait_time}s: {e}")
             await asyncio.sleep(wait_time)
 

@@ -12,7 +12,7 @@ export async function getHistory() {
   return response.json();
 }
 
-export async function sendMessage(content, tags, timeoutMs = 25000) {
+export async function sendMessage(content, tags, timeoutMs = 60000) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
   

@@ -32,7 +32,11 @@ export async function sendMessage(content, tags, timeoutMs = 60000) {
     }
     
     return response.json();
-  } finally {
+  } catch (error) {
+    if (error.name === 'AbortError') {
+      throw new Error('Request timed out after 60 seconds. Please try again.');
+    }
+    throw error;
     clearTimeout(timeout);
   }
 }

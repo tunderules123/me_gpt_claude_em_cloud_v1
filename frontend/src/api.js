@@ -37,6 +37,7 @@ export async function sendMessage(content, tags, timeoutMs = 60000) {
       throw new Error('Request timed out after 60 seconds. Please try again.');
     }
     throw error;
+  } finally {
     clearTimeout(timeout);
   }
 }

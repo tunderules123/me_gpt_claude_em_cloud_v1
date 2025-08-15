@@ -204,12 +204,12 @@ async def call_anthropic(messages: List[Dict[str, str]], timeout: int = 20) -> s
 
 async def call_provider(provider: str, messages: List[Dict[str, str]]) -> str:
     """Call the specified provider with retries and backoff"""
-    max_retries = 2
-    base_timeout = 20
+    max_retries = 1  # Reduce retries to make it faster
+    base_timeout = 25  # Increase base timeout
     
     for attempt in range(max_retries + 1):
         try:
-            timeout = base_timeout + (attempt * 10)  # Increase timeout on retries
+            timeout = base_timeout + (attempt * 5)  # Smaller timeout increase
             
             if provider == "gpt":
                 return await call_openai(messages, timeout)
